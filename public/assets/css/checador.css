@@ -1,0 +1,157 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: radial-gradient(circle at top left, #0a1a2f, #000);
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+/* ENCABEZADO */
+.header {
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.header-title {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.btn-entrar {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(59, 130, 246, 0.3);
+    color: white;
+    font-size: 16px;
+    text-decoration: none;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    transition: 0.2s;
+}
+
+.btn-entrar:hover {
+    background: rgba(59, 130, 246, 0.6);
+}
+
+/* DIVIDER */
+.divider {
+    border: none;
+    height: 2px;
+    background: linear-gradient(to right, #3b82f6, transparent);
+    width: 90%;
+    max-width: 900px;
+    margin: 20px auto;
+}
+
+/* VIDEO */
+#contenedor {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    aspect-ratio: 4 / 3;
+    margin: auto;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.25);
+}
+
+video,
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#status {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #a8b3c4;
+}
+
+/* LINK METODO */
+.other-method {
+    margin-top: 20px;
+    font-size: 18px;
+    opacity: 0.8;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.other-method:hover {
+    opacity: 1;
+    color: #7bbdff;
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: #0a1a2f;
+    padding: 25px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 360px;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(59, 130, 246, .5);
+}
+
+.modal-content img {
+    width: 110px;
+    border-radius: 50%;
+    margin: 15px 0;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-ok {
+    flex: 1;
+    background: #22c55e;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-cancel {
+    flex: 1;
+    background: #ef4444;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
