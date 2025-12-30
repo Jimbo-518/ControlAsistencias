@@ -123,6 +123,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     mensajeConfirmacion.textContent = mensaje;
     accionesConfirmacion.innerHTML = '';
 
+    // Botones de acción enviados por el backend
     opciones.forEach(opcion => {
       crearBoton(
         opcion.replace('_', ' '),
@@ -130,6 +131,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         'btn-ok'
       );
     });
+
+    // Botón cancelar
+    crearBoton(
+      'Cancelar',
+      cancelarConfirmacion,
+      'btn-cancel'
+    );
+
+    modal.classList.add('show');
   }
 
   function crearBoton(texto, accion, clase) {
@@ -142,6 +152,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function cerrarModal() {
     modal.classList.remove('show');
+  }
+
+  function cancelarConfirmacion() {
+    status.textContent = 'Operación cancelada';
+    cerrarModal();
+    desbloquearConDelay();
   }
 
   /* ================= REGISTRO ================= */

@@ -58,7 +58,7 @@ class ChecadorController extends Controller
     {
         $request->validate([
             'empleado_id' => 'required|exists:empleados,id_empleado',
-            'accion_confirmada' => 'nullable|string'
+            'accion_confirmada' => 'nullable|in:entrada,entrada_comida,salida_comida,salida'
         ]);
 
         $empleado = empleados::findOrFail($request->empleado_id);
