@@ -107,8 +107,70 @@ class ChecadorService
         ];
     }
 
+    protected function cerrarAsistenciasPendientes(empleados $empleado): void
+    {
+        // Buscar días anteriores con entrada pero sin salida procesada
+        $fechasPendientes = asistencias::where('id_empleado', $empleado->id_empleado)
+            ->where('fecha', '<', now()->toDateString())
+            ->select('fecha')
+            ->groupBy('fecha')
+            ->get();
+
+        foreach ($fechasPendientes as $dia) {
+
+            // ¿Ya está procesado ese día?
+            $yaProcesado = asistencias_procesadas::where('id_empleado', $empleado->id_empleado)
+                ->where('fecha', $dia->fecha)
+                ->exists();
+
+            if ($yaProcesado) {
+                continue;
+            }
+
+            // Registros del día
+            $registros = asistencias::where('id_empleado', $empleado->id_empleado)
+                ->whereDate('fecha', $dia->fecha)
+                ->orderBy('hora')
+                ->get();
+
+            $entrada = $registros->firstWhere('tipo_registro', 'entrada');
+            $salida = $registros->where('tipo_registro', 'salida')->last();
+
+            $motivos = [];
+
+            if ($entrada && !$salida) {
+                $motivos[] = 'No registró salida';
+            }
+
+            if (!$entrada) {
+                $motivos[] = 'No registró entrada';
+            }
+
+            asistencias_procesadas::updateOrCreate(
+                [
+                    'id_empleado' => $empleado->id_empleado,
+                    'fecha' => $dia->fecha,
+                ],
+                [
+                    'hora_entrada' => $entrada?->hora,
+                    'hora_salida' => null,
+                    'minutos_faltantes' => 0,
+                    'minutos_extra' => 0,
+                    'estado' => 'incompleto',
+                    'cerrado' => true,
+                    'inconsistencia' => true,
+                    'motivo_inconsistencia' => implode(' | ', $motivos),
+                ]
+            );
+        }
+    }
+
     public function guardar(empleados $empleado, string $tipo, horario_detalle $detalle)
     {
+        if ($tipo === 'entrada') {
+            $this->cerrarAsistenciasPendientes($empleado);
+        }
+
         asistencias::create([
             'id_empleado' => $empleado->id_empleado,
             'fecha' => now()->toDateString(),
@@ -141,9 +203,7 @@ class ChecadorService
         $minutosFaltantes = 0;
         $minutosExtra = 0;
 
-        /* ===============================
-         * VALIDACIONES BÁSICAS
-         * =============================== */
+        // VALIDACIONES BÁSICAS
         if (!$entrada)
             $inconsistencias[] = 'No registró entrada';
         if (!$salida)
@@ -162,48 +222,38 @@ class ChecadorService
             return;
         }
 
-        /* ===============================
-         * VALIDAR HORARIO
-         * =============================== */
-        if (!$detalle->hora_entrada || !$detalle->hora_salida) {
+        // VALIDAR HORARIO
+        if (!$detalle->entrada || !$detalle->salida) {
             $inconsistencias[] = 'Horario no configurado';
         } else {
 
-            $horaEntradaHorario = Carbon::today()->setTimeFromTimeString($detalle->hora_entrada);
-            $horaSalidaHorario = Carbon::today()->setTimeFromTimeString($detalle->hora_salida);
+            $horaEntradaHorario = Carbon::today()->setTimeFromTimeString($detalle->entrada);
+            $horaSalidaHorario = Carbon::today()->setTimeFromTimeString($detalle->salida);
 
             $horaEntradaReal = Carbon::today()->setTimeFromTimeString($entrada->hora);
             $horaSalidaReal = Carbon::today()->setTimeFromTimeString($salida->hora);
 
-            /* ===============================
-             * RETARDO
-             * =============================== */
+            // RETARDO
             if ($horaEntradaReal->greaterThan($horaEntradaHorario)) {
                 $retardo = $horaEntradaHorario->diffInMinutes($horaEntradaReal);
                 $minutosFaltantes += $retardo;
                 $inconsistencias[] = "Entró {$retardo} min tarde";
             }
 
-            /* ===============================
-             * SALIDA ANTICIPADA
-             * =============================== */
+            // SALIDA ANTICIPADA
             if ($horaSalidaReal->lessThan($horaSalidaHorario)) {
                 $faltante = $horaSalidaReal->diffInMinutes($horaSalidaHorario);
                 $minutosFaltantes += $faltante;
                 $inconsistencias[] = "Salió {$faltante} min antes";
             }
 
-            /* ===============================
-             * MINUTOS EXTRA
-             * =============================== */
+            // MINUTOS EXTRA
             if ($horaSalidaReal->greaterThan($horaSalidaHorario)) {
                 $minutosExtra = $horaSalidaHorario->diffInMinutes($horaSalidaReal);
             }
         }
 
-        /* ===============================
-         * TIEMPO DE COMIDA
-         * =============================== */
+        // TIEMPO DE COMIDA
         if ($detalle->comida_inicio && $detalle->comida_fin) {
 
             if (!$salidaComida)
@@ -234,9 +284,7 @@ class ChecadorService
             }
         }
 
-        /* ===============================
-         * GUARDAR RESULTADO
-         * =============================== */
+        // GUARDAR RESULTADO
         asistencias_procesadas::updateOrCreate(
             ['id_empleado' => $empleado->id_empleado, 'fecha' => $fecha],
             [

@@ -20,7 +20,7 @@ Route::post('/checador/identificar', [ChecadorController::class, 'identificar'])
 Route::post('/checador/registrar', [ChecadorController::class, 'registrar'])
     ->name('checador.registrar');
 
-//Edificios 
+//Edificios
 Route::get('/edificios', [EdificioController::class, 'index'])
     ->name('edificios.index');
 Route::post('/edificios', [EdificioController::class, 'store'])
