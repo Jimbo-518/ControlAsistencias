@@ -8,6 +8,10 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\FaceIdController;
 use App\Http\Controllers\ChecadorController;
 
+Route::get('login', function () {
+    return view('login');
+})->name('login');
+
 Route::get('/', function () {
     return view('index');
 });
