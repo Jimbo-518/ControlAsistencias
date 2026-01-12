@@ -18,6 +18,8 @@ Route::get('/login', [LoginController::class, 'index'])
     ->name('login.index');
 Route::post('/login', [LoginController::class, 'login'])
     ->name('login.validar');
+Route::get('/logout', [LoginController::class, 'logout'])
+    ->name('logout');
 
 // Registrar y validar usuario
 Route::post('/registrar', [RegisterController::class, 'registrar'])
