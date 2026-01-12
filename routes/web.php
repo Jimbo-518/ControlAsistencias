@@ -7,14 +7,22 @@ use App\Http\Controllers\HorarioDetalleController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\FaceIdController;
 use App\Http\Controllers\ChecadorController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 
-Route::get('login', function () {
-    return view('login');
-})->name('login');
+Route::get('/', function () {return view('index');})
+    ->name('home');
 
-Route::get('/', function () {
-    return view('index');
-});
+// Login
+Route::get('/login', [LoginController::class, 'index'])
+    ->name('login.index');
+Route::post('/login', [LoginController::class, 'login'])
+    ->name('login.validar');
+
+// Registrar y validar usuario
+Route::post('/registrar', [RegisterController::class, 'registrar'])
+    ->name('registrar');
+Route::get('/confirmar-cuenta/{token}', [RegisterController::class, 'confirmar']);
 
 //Checador
 Route::get('/checador', [ChecadorController::class, 'index'])

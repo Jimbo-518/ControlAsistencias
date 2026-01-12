@@ -19,13 +19,33 @@
                 <path d="M5 10h11a4 4 0 1 1 0 8h-1" />
             </svg>
         </a>
+
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+                </ul>
+            </div>
+        @endif
     </div>
 
     <hr class="divider">
 
     <div class="auth-wrapper">
-
-        <!-- CONTENEDOR FORMULARIOS -->
         <div class="auth-forms">
 
             <!-- LOGIN -->
@@ -33,9 +53,10 @@
                 <h1>Bienvenido</h1>
                 <p>Accede al sistema de control de asistencias</p>
 
-                <form>
-                    <input type="email" placeholder="Correo">
-                    <input type="password" placeholder="Contraseña">
+                <form method="post" action="{{ route('login.validar') }}">
+                    @csrf
+                    <input type="text" name="usuario" placeholder="Usuario" required>
+                    <input type="password" name="password" placeholder="Contraseña" required>
                     <button class="btn-ok">Entrar</button>
                 </form>
 
@@ -49,10 +70,11 @@
                 <h1>Únete al sistema</h1>
                 <p>Controla accesos, horarios y asistencia en un solo lugar</p>
 
-                <form>
-                    <input type="text" placeholder="Nombre completo">
-                    <input type="email" placeholder="Correo">
-                    <input type="password" placeholder="Contraseña">
+                <form method="post" action="{{ route('registrar') }}">
+                    @csrf
+                    <input type="number" name="id_empleado" placeholder="ID empleado">
+                    <input type="text" name="usuario" placeholder="Usuario">
+                    <input type="password" name="password" placeholder="Contraseña">
                     <button class="btn-ok">Registrarme</button>
                 </form>
 
