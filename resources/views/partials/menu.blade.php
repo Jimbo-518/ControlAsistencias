@@ -2,7 +2,7 @@
     <div class="menu-scroll">
         <!-- Perfil -->
         <div class="profile-section">
-            <img src="https://i.pravatar.cc/300" alt="Usuario">
+            <img src="{{ session('foto_perfil') }}" alt="Foto de perfil">
         </div>
         <div class="clock" id="clock">--:--</div>
 
@@ -23,7 +23,9 @@
             </div>
         </div>
         <div class="submenu" id="empleados">
-            <div>Mi perfil</div>
+            <a href="{{ route('perfil.index') }}">
+                <div>Mi perfil</div>
+            </a>
             <a href="{{ route('empleados.create') }}">
                 <div>Dar de alta</div>
             </a>

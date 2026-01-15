@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Model;
 
 class empleados extends Model
@@ -36,4 +34,8 @@ class empleados extends Model
         return $this->hasMany(face_id::class, 'id_empleado');
     }
 
+    public function usuario()
+    {
+        return $this->hasOne(usuarios::class, 'id_empleado', 'id_empleado');
+    }
 }

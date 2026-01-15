@@ -9,6 +9,7 @@ use App\Http\Controllers\FaceIdController;
 use App\Http\Controllers\ChecadorController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\PerfilController;
 
 Route::get('/', function () {return view('index');})
     ->name('home');
@@ -77,3 +78,9 @@ Route::post('/empleados/{empleado}/face',[FaceIdController::class, 'store'])
 
 Route::get('/empleados', [EmpleadoController::class, 'index'])
     ->name('empleados.index');
+
+//Perfil
+Route::get('/mi-perfil', [PerfilController::class, 'index'])
+    ->name('perfil.index');
+Route::post('/perfil/foto', [PerfilController::class, 'actualizarFoto'])
+    ->name('perfil.foto');

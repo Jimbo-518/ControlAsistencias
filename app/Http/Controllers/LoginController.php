@@ -32,12 +32,21 @@ class LoginController extends Controller
             return back()->with('error', 'Tu cuenta aún no está confirmada. Revisa tu correo.');
         }
 
+        $idEmpleado = $usuario->id_empleado;
+
+        $rutaFoto = storage_path("app/public/perfiles/{$idEmpleado}.jpg");
+
+        $fotoPerfil = file_exists($rutaFoto)
+            ? asset("storage/perfiles/{$idEmpleado}.jpg")
+            : asset("storage/perfiles/default.jpg");
+
         // Guardar sesión
         session([
             'usuario_id' => $usuario->id_usuario,
             'id_empleado' => $usuario->id_empleado,
             'usuario' => $usuario->usuario,
-            'rol' => $usuario->id_rol
+            'rol' => $usuario->id_rol,
+            'foto_perfil' => $fotoPerfil
         ]);
 
         // Actualizar último acceso
