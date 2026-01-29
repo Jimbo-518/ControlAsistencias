@@ -28,6 +28,11 @@ class RegisterController extends Controller
             return back()->with('error', 'El empleado no existe en registros.');
         }
 
+        
+        if($empleado->estatus !== 'activo'){
+            return back()->with('error', 'El empleado no está activo.  Hable con un Administrador.');
+        }
+
         // Crear usuario inactivo
         $usuario = usuarios::create([
             'id_empleado' => $empleado->id_empleado,

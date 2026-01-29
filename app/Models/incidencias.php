@@ -11,7 +11,8 @@ class incidencias extends Model
 
     protected $fillable = [
         'id_empleado',
-        'fecha',
+        'fecha_inicio',
+        'fecha_fin',
         'descripcion',
         'id_tipo_incidencia',
         'auditor',
@@ -21,7 +22,8 @@ class incidencias extends Model
     ];
 
     protected $casts = [
-        'fecha'           => 'date',
+        'fecha_inicio'           => 'date',
+        'fecha_fin'              => 'date',
         'fecha_registro'  => 'datetime',
         'archivada'       => 'boolean'
     ];

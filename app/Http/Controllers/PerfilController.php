@@ -9,13 +9,9 @@ class PerfilController extends Controller
 {
     public function index()
     {
-        $userIdEmpleado = session('id_empleado');
+        $userIdEmpleado = auth()->user()->id_empleado;
 
-        if (!$userIdEmpleado) {
-            return redirect()->route('login')->with('error', 'Debes iniciar sesión para ver tu perfil.');
-        }
-
-        $empleado = empleados::with('usuario')
+        $empleado = empleados::with(['usuario.rol'])
             ->where('id_empleado', $userIdEmpleado)
             ->first();
 
@@ -28,7 +24,7 @@ class PerfilController extends Controller
             'foto' => 'required|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
-        $idEmpleado = session('id_empleado');
+        $idEmpleado = auth()->user()->id_empleado;
 
         if (!$idEmpleado) {
             return back()->with('error', 'Sesión inválida.');

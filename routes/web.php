@@ -10,6 +10,8 @@ use App\Http\Controllers\ChecadorController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\JustificanteController;
+use App\Http\Controllers\TipoIncidenciaController;
 
 Route::get('/', function () {return view('index');})
     ->name('home');
@@ -79,8 +81,41 @@ Route::post('/empleados/{empleado}/face',[FaceIdController::class, 'store'])
 Route::get('/empleados', [EmpleadoController::class, 'index'])
     ->name('empleados.index');
 
+Route::get('/empleados/{id}/editar', [EmpleadoController::class, 'edit'])
+    ->name('empleados.edit');
+Route::put('/empleados/{id}', [EmpleadoController::class, 'update'])
+    ->name('empleados.update');
+Route::patch('/empleados/{id}/baja', [EmpleadoController::class, 'baja'])
+    ->name('empleados.baja');
+
 //Perfil
 Route::get('/mi-perfil', [PerfilController::class, 'index'])
     ->name('perfil.index');
 Route::post('/perfil/foto', [PerfilController::class, 'actualizarFoto'])
     ->name('perfil.foto');
+
+//Justificantes
+Route::get('/justificantes/subir', [JustificanteController::class, 'create'])
+    ->name('justificantes.create');
+Route::post('/justificantes', [JustificanteController::class, 'store'])
+    ->name('justificantes.store');
+
+Route::get('/justificantes', [JustificanteController::class, 'index'])
+    ->name('justificantes.index');
+Route::patch('/justificantes/{id}/revisar', [JustificanteController::class, 'revisar'])
+    ->name('justificantes.revisar');
+
+//Tipos de Incidencia
+Route::get('/tipos-incidencia', [TipoIncidenciaController::class, 'index'])
+    ->name('tipos-incidencia.index');
+Route::get('/tipos-incidencia/crear', [TipoIncidenciaController::class, 'create'])
+    ->name('tipos-incidencia.create');
+Route::post('/tipos-incidencia', [TipoIncidenciaController::class, 'store'])
+    ->name('tipos-incidencia.store');
+    
+Route::get('/tipos-incidencia/{id}/editar', [TipoIncidenciaController::class, 'edit'])
+    ->name('tipos-incidencia.edit');
+Route::put('/tipos-incidencia/{id}', [TipoIncidenciaController::class, 'update'])
+    ->name('tipos-incidencia.update');
+Route::patch('/tipos-incidencia/{id}/toggle', [TipoIncidenciaController::class, 'toggleActivo'])
+    ->name('tipos-incidencia.toggle');

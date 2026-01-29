@@ -42,8 +42,12 @@
             </div>
         </div>
         <div class="submenu" id="justificantes">
-            <div>Subir justificante</div>
-            <div>Ver justificantes</div>
+            <a href="{{ route('justificantes.create') }}">
+                <div>Subir Justificantes</div>
+            </a>
+            <a href="{{ route('justificantes.index') }}">
+                <div>Ver justificantes</div>
+            </a>
         </div>
 
         <!-- ADMINISTRAR -->
@@ -63,6 +67,9 @@
             <a href="{{ route('horarios.index') }}">
                 <div>Horarios</div>
             </a>
+            <a href="{{ route('tipos-incidencia.index') }}">
+                <div>Tipos de Incidencia</div>
+            </a>
         </div>
 
         <!-- REPORTES -->
@@ -75,6 +82,18 @@
         <div class="submenu" id="reportes">
             <div>Reporte general</div>
             <div>Mi reporte</div>
+        </div>
+
+        <!-- Auditorías -->
+        <div class="menu-item dropdown" data-target="auditorias">
+            <div class="dropdown-title">
+                <span>Auditorías</span>
+                <span>▼</span>
+            </div>
+        </div>
+        <div class="submenu" id="auditorias">
+            <div>Movimientos</div>
+            <div>Inconsistencias</div>
         </div>
     </div>
 

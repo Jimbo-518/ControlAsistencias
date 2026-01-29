@@ -83,15 +83,7 @@
                     </tr>
                     <tr>
                         <th>Rol</th>
-                        <td>{{ $empleado->usuario->id_rol ?? '—' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Activo</th>
-                        <td>{{ isset($empleado->usuario) && $empleado->usuario->activo ? 'Sí' : 'No' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Último acceso</th>
-                        <td>{{ $empleado->usuario->ultimo_acceso ?? '—' }}</td>
+                        <td>{{ $empleado->usuario->rol->nombre ?? '—' }}</td>
                     </tr>
                 </table>
             </div>

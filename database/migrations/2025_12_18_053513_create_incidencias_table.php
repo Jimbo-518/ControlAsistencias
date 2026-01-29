@@ -11,7 +11,8 @@ return new class extends Migration {
             $table->id('id_incidencia');
 
             $table->unsignedBigInteger('id_empleado');
-            $table->date('fecha');
+            $table->date('fecha_inicio');
+            $table->date('fecha_fin');
 
             $table->text('descripcion')->nullable();
 

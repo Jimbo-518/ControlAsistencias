@@ -2,8 +2,9 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class usuarios extends Model
+class usuarios extends Authenticatable
 {
     use Notifiable;
 
@@ -20,7 +21,8 @@ class usuarios extends Model
     ];
 
     protected $hidden = [
-        'password'
+        'password',
+        'remember_token'
     ];
 
     protected $casts = [
